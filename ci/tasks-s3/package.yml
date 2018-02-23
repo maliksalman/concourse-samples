@@ -1,0 +1,13 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: cloudfoundry/cflinuxfs2
+    tag: 1.188.0
+inputs:
+- name: version
+- name: my-repo
+outputs:
+- name: go-bin
+run:
+  path: my-repo/ci/tasks-s3/package.sh

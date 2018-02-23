@@ -6,9 +6,19 @@ resources:
     uri: https://github.com/maliksalman/concourse-samples.git
     branch: concourse
 
+- name: pcfdev
+  type: cf
+  source:
+    api: ((CF_API_URL))
+    username: ((CF_USER))
+    password: ((CF_PASSWORD))
+    organization: ((CF_ORG))
+    space: ((CF_SPACE))
+    skip_cert_check: true
+
 jobs:
 
-- name: build-and-test
+- name: build-test-deploy
   plan:
 
   - get: my-repo
@@ -34,6 +44,7 @@ jobs:
           apt-get install -y golang
           go build my-repo/go/hello.go
           cp hello go-bin/hello-go
+          cp my-repo/go/manifest.yml go-bin/
 
   - task: go-test
     config:
@@ -54,3 +65,8 @@ jobs:
           sleep 1
           curl -v http://127.0.0.1:8080/
 
+
+  - put: pcfdev
+    params:
+      manifest: go-bin/manifest.yml
+      path: go-bin/

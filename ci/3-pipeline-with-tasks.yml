@@ -1,0 +1,36 @@
+resources:
+
+- name: my-repo
+  type: git
+  source:
+    uri: https://github.com/maliksalman/concourse-samples.git
+    branch: concourse
+
+- name: pcfdev
+  type: cf
+  source:
+    api: ((CF_API_URL))
+    username: ((CF_USER))
+    password: ((CF_PASSWORD))
+    organization: ((CF_ORG))
+    space: ((CF_SPACE))
+    skip_cert_check: true
+
+jobs:
+
+- name: build-test-deploy
+  plan:
+
+  - get: my-repo
+    trigger: true
+
+  - task: go-build
+    file: my-repo/ci/tasks/build.yml
+
+  - task: go-test
+    file: my-repo/ci/tasks/test.yml
+
+  - put: pcfdev
+    params:
+      manifest: go-bin/manifest.yml
+      path: go-bin/
