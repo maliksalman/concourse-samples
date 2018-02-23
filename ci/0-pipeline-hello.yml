@@ -5,22 +5,27 @@ jobs:
 
   - task: say-hello
     config:
+
       platform: linux
       image_resource:
         type: docker-image
-        source: {repository: busybox}
-      run:
+        source:
+          repository: busybox
+          tag: latest
 
-        # form #1
+      # form #1
+      run:
         path: echo
         args: ["Hello, World!"]
 
-#        # form #2
+#      # form #2
+#      run:
 #        path: echo
 #        args:
 #        - Hello, World!
 
-#        # form #2
+#      # form #3
+#      run:
 #        path: sh
 #        args:
 #        - -c
