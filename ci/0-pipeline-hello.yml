@@ -1,0 +1,30 @@
+jobs:
+
+- name: hello-world
+  plan:
+
+  - task: say-hello
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: busybox}
+      run:
+
+        # form #1
+        path: echo
+        args: ["Hello, World!"]
+
+#        # form #2
+#        path: echo
+#        args:
+#        - Hello, World!
+
+#        # form #2
+#        path: sh
+#        args:
+#        - -c
+#        - |
+#          echo "Hello, World!"
+#          echo "Hello, Mars!"
+
